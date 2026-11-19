@@ -1,0 +1,152 @@
+# MoE-SHD 实验配置文件
+# 用于特定实验的参数配置
+
+# ========== 实验标识 ==========
+experiment_id: "exp_001"
+description: "基准实验 - 默认参数"
+date: "2024-01-15"
+
+# ========== 实验变体 ==========
+variants:
+  - name: "baseline"
+    description: "基准配置"
+    config_overrides: {}  # 无覆盖，使用默认值
+  
+  - name: "high_security"
+    description: "高安全场景（医疗/金融）"
+    config_overrides:
+      objective:
+        weights:
+          resource: 0.2
+          latency: 0.1
+          security: 0.7
+      constraints:
+        threat_level:
+          coverage_requirements:
+            high_risk: 0.95
+            medium_risk: 0.85
+            low_risk: 0.7
+  
+  - name: "low_cost"
+    description: "低成本场景（轻量化部署）"
+    config_overrides:
+      objective:
+        weights:
+          resource: 0.5
+          latency: 0.2
+          security: 0.3
+      graph:
+        default_node_costs:
+          expert_honeypot: 2  # 使用更轻量的蜜罐
+          steiner: 1
+      constraints:
+        resource_capacity:
+          utilization_limits:
+            cpu: 0.5  # 允许更高的CPU使用率
+  
+  - name: "high_performance"
+    description: "高性能场景（在线推理）"
+    config_overrides:
+      objective:
+        weights:
+          resource: 0.2
+          latency: 0.5
+          security: 0.3
+      graph:
+        edge_latency:
+          intra_rack: [0.05, 0.5]
+          inter_rack: [0.5, 2.0]
+          inter_switch: [2.0, 10.0]
+      constraints:
+        honeypot_simulation:
+          similarity_threshold: 0.7  # 降低伪装要求以提高性能
+
+# ========== 实验参数扫描 ==========
+parameter_sweep:
+  enabled: false
+  parameters:
+    - name: "genetic_algorithm.population_size"
+      values: [50, 100, 200]
+    
+    - name: "genetic_algorithm.generations"
+      values: [100, 200, 500]
+    
+    - name: "objective.weights.resource"
+      values: [0.2, 0.35, 0.5]
+    
+    - name: "objective.weights.latency"
+      values: [0.1, 0.25, 0.4]
+    
+    - name: "objective.weights.security"
+      values: [0.3, 0.4, 0.6]
+
+# ========== 评估指标配置 ==========
+metrics:
+  # 经济性指标
+  economic:
+    - "total_cost"
+    - "resource_cost"
+    - "link_cost"
+    - "maintenance_cost"
+  
+  # 安全性指标
+  security:
+    - "attack_interception_rate"
+    - "coverage_rate"
+    - "threat_detection_rate"
+    - "false_positive_rate"
+  
+  # 性能指标
+  performance:
+    - "average_latency"
+    - "max_latency"
+    - "throughput"
+    - "resource_utilization"
+  
+  # 算法指标
+  algorithmic:
+    - "computation_time"
+    - "convergence_iteration"
+    - "solution_quality"
+    - "pareto_front_size"
+
+# ========== 对比算法配置 ==========
+baseline_algorithms:
+  - name: "random"
+    description: "随机部署K个蜜罐"
+    parameters:
+      k: 10  # 部署的蜜罐数量
+  
+  - name: "k_medoids"
+    description: "基于K-Medoids聚类部署"
+    parameters:
+      k: 10
+      metric: "euclidean"
+  
+  - name: "greedy"
+    description: "贪心算法"
+    parameters:
+      budget: 30000  # 预算限制
+
+# ========== 运行配置 ==========
+execution:
+  num_runs: 10           # 每次实验运行次数
+  timeout: 3600          # 单次运行超时时间（秒）
+  parallel: true         # 是否并行运行
+  max_workers: 4         # 最大并行进程数
+  random_seeds: [42, 123, 456, 789, 101112]  # 随机种子列表
+
+# ========== 结果分析配置 ==========
+analysis:
+  statistical_tests:
+    - "t_test"          # t检验
+    - "anova"           # 方差分析
+    - "wilcoxon"        # 威尔科克森秩和检验
+  
+  visualization_types:
+    - "cost_vs_security"  # 成本-安全权衡曲线
+    - "convergence_curve" # 收敛曲线
+    - "topology_visualization" # 拓扑可视化
+    - "pareto_front"      # 帕累托前沿
+  
+  report_format: "latex"  # 报告格式: latex, markdown, html

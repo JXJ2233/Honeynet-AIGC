@@ -1,0 +1,65 @@
+# MoE-SHD 项目默认配置
+# 生成时间: 2024年
+
+project:
+  name: "MoE-SHD"
+  version: "1.0.0"
+  description: "基于斯坦纳树的混合专家大模型蜜罐统一优化部署系统"
+
+scenarios:
+  default:
+    weights:
+      economic: 0.33
+      performance: 0.33
+      security: 0.34
+    description: "默认平衡场景"
+    
+  high_security:
+    weights:
+      economic: 0.2
+      performance: 0.1
+      security: 0.7
+    description: "高安全场景（医疗/金融）"
+    
+  low_cost:
+    weights:
+      economic: 0.5
+      performance: 0.2
+      security: 0.3
+    description: "低成本场景（轻量化部署）"
+    
+  real_time:
+    weights:
+      economic: 0.2
+      performance: 0.5
+      security: 0.3
+    description: "实时性场景（在线推理）"
+
+network:
+  num_terminals: 10
+  num_steiners: 20
+  network_size: [0, 100, 0, 100]
+  connection_probability: 0.2
+
+algorithm:
+  scb_filter:
+    alpha: 0.4
+    beta: 0.3
+    gamma: 0.3
+    keep_ratio: 0.4
+    
+  ga_solver:
+    population_size: 100
+    generations: 50
+    crossover_rate: 0.8
+    mutation_rate: 0.1
+
+constraints:
+  budget: 100000.0
+  max_latency_core_aggregation: 20.0
+  min_security_coverage: 0.7
+
+visualization:
+  enable: true
+  output_dir: "results/visualizations"
+  dpi: 300

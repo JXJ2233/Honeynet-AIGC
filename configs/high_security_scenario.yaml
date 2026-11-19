@@ -1,0 +1,27 @@
+# configs/high_security_scenario.yaml
+scenario: "high_security"
+description: "医疗/金融等高安全场景"
+
+weights:
+  w_A: 0.2  # 经济性
+  w_B: 0.1  # 性能
+  w_C: 0.7  # 安全性
+
+algorithm_params:
+  scb_filter:
+    security_weight: 0.6
+    cost_weight: 0.2
+    balance_weight: 0.2
+    threshold: 0.5
+    
+  genetic_algorithm:
+    population_size: 150
+    generations: 200
+    mutation_rate: 0.15
+    crossover_rate: 0.85
+    elite_size: 10
+    
+constraints:
+  security_coverage_threshold: 0.8
+  max_latency: 50  # ms
+  max_cost: 1000000
