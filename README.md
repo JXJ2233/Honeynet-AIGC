@@ -53,6 +53,20 @@ streamlit run home.py
 
 也可直接运行根目录下的 `一键启动（整体）.bat` 或 `一键启动（分页启动）.bat`，按顺序拉起后端服务与前端页面。
 
+## 界面预览
+
+**算法工作台（3D 攻防沙盘）**
+
+![算法工作台](screenshots/01_workbench.png)
+
+**态势感知与调度中心**
+
+![态势指挥中心](screenshots/02_command_center.png)
+
+**蜜罐攻击控制台**
+
+![蜜罐攻击控制台](screenshots/03_honeypot.png)
+
 ## 算法流程
 
 ```
